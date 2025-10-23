@@ -1,55 +1,68 @@
 # -*- coding: utf-8 -*-
+import unittest
+import time
+import re
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoAlertPresentException
-import unittest, time, re
+from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
+
 
 class TestAddGroup(unittest.TestCase):
     def setUp(self):
         self.wd = webdriver.Firefox()
         self.wd.implicitly_wait(30)
 
-    
     def test_add_group(self):
-        dw = self.wd
-        dw.get("https://192.168.0.185/addressbook/")
-        dw.find_element_by_name("user").click()
-        dw.find_element_by_name("user").clear()
-        dw.find_element_by_name("user").send_keys("admin")
-        dw.find_element_by_name("pass").click()
-        dw.find_element_by_name("pass").clear()
-        dw.find_element_by_name("pass").send_keys("secret")
-        dw.find_element_by_xpath("//input[@value='Login']").click()
-        dw.find_element_by_link_text("groups").click()
-        dw.find_element_by_name("new").click()
-        dw.find_element_by_name("group_name").click()
-        dw.find_element_by_name("group_name").clear()
-        dw.find_element_by_name("group_name").send_keys("Dream")
-        dw.find_element_by_name("group_header").click()
-        dw.find_element_by_name("group_header").clear()
-        dw.find_element_by_name("group_header").send_keys("Cost")
-        dw.find_element_by_name("group_footer").click()
-        dw.find_element_by_name("group_footer").clear()
-        dw.find_element_by_name("group_footer").send_keys("Free")
-        dw.find_element_by_name("submit").click()
-        dw.find_element_by_link_text("group page").click()
-        dw.find_element_by_link_text("Logout").click()
-    
-    def is_element_present(self, how, what):
-        try: self.wd.find_element(by=how, value=what)
-        except NoSuchElementException as e: return False
-        return True
-    
-    def is_alert_present(self):
-        try: self.wd.switch_to_alert()
-        except NoAlertPresentException as e: return False
-        return True
-    
+        wd = self.wd
+        wd.get("http://localhost/addressbook/")
 
-    
+        # Логин
+        wd.find_element(By.NAME, "user").click()
+        wd.find_element(By.NAME, "user").clear()
+        wd.find_element(By.NAME, "user").send_keys("admin")
+        wd.find_element(By.NAME, "pass").click()
+        wd.find_element(By.NAME, "pass").clear()
+        wd.find_element(By.NAME, "pass").send_keys("secret")
+        wd.find_element(By.XPATH, "//input[@value='Login']").click()
+
+        # Переход к группам
+        wd.find_element(By.LINK_TEXT, "groups").click()
+
+        # Создание новой группы
+        wd.find_element(By.NAME, "new").click()
+        wd.find_element(By.NAME, "group_name").click()
+        wd.find_element(By.NAME, "group_name").clear()
+        wd.find_element(By.NAME, "group_name").send_keys("Dream")
+        wd.find_element(By.NAME, "group_header").click()
+        wd.find_element(By.NAME, "group_header").clear()
+        wd.find_element(By.NAME, "group_header").send_keys("Cost")
+        wd.find_element(By.NAME, "group_footer").click()
+        wd.find_element(By.NAME, "group_footer").clear()
+        wd.find_element(By.NAME, "group_footer").send_keys("Free")
+        wd.find_element(By.NAME, "submit").click()
+
+        # Возврат на страницу групп
+        wd.find_element(By.LINK_TEXT, "group page").click()
+
+        # Выход
+        wd.find_element(By.LINK_TEXT, "Logout").click()
+
+    def is_element_present(self, how, what):
+        try:
+            self.wd.find_element(by=how, value=what)
+        except NoSuchElementException:
+            return False
+        return True
+
+    def is_alert_present(self):
+        try:
+            self.wd.switch_to.alert
+        except NoAlertPresentException:
+            return False
+        return True
+
     def tearDown(self):
         self.wd.quit()
 
