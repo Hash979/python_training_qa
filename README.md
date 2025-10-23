@@ -1,1 +1,1 @@
-# python_training_qa
+# Repository for training QA in python 
