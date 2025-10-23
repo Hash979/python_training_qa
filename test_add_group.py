@@ -3,7 +3,7 @@ import unittest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
-
+from group import Group
 
 class TestAddGroup(unittest.TestCase):
     def setUp(self):
@@ -15,7 +15,7 @@ class TestAddGroup(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.open_groups_page(wd)
-        self.create_new_group(wd, name="Test", header="With", footer="Parametr")
+        self.create_new_group(wd, Group(name="sss", header="sss", footer="sss"))
         self.return_to_groups_page(wd)
         self.logout(wd)
 
@@ -24,7 +24,7 @@ class TestAddGroup(unittest.TestCase):
          self.open_home_page(wd)
          self.login(wd, username="admin", password="secret")
          self.open_groups_page(wd)
-         self.create_new_group(wd, name="", header="", footer="")
+         self.create_new_group(wd, Group(name="", header="", footer=""))
          self.return_to_groups_page(wd)
          self.logout(wd)
 
@@ -41,14 +41,14 @@ class TestAddGroup(unittest.TestCase):
     def open_groups_page(self, wd):
         wd.find_element(By.LINK_TEXT, "groups").click()
 
-    def create_new_group(self, wd, name, header, footer):
+    def create_new_group(self, wd, group):
         wd.find_element(By.NAME, "new").click()
         wd.find_element(By.NAME, "group_name").clear()
-        wd.find_element(By.NAME, "group_name").send_keys(name)
+        wd.find_element(By.NAME, "group_name").send_keys(group.name)
         wd.find_element(By.NAME, "group_header").clear()
-        wd.find_element(By.NAME, "group_header").send_keys(header)
+        wd.find_element(By.NAME, "group_header").send_keys(group.header)
         wd.find_element(By.NAME, "group_footer").clear()
-        wd.find_element(By.NAME, "group_footer").send_keys(footer)
+        wd.find_element(By.NAME, "group_footer").send_keys(group.footer)
         wd.find_element(By.NAME, "submit").click()
 
     def return_to_groups_page(self, wd):
