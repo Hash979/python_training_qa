@@ -39,3 +39,10 @@ class ContactHelper:
     def open_add_new_contact_page(self):
         wd = self.app.wd
         wd.find_element(By.LINK_TEXT, "add new").click()
+
+    def delete_first_contact(self):
+        wd = self.app.wd
+        self.app.open_home_page()
+        wd.find_element(By.NAME, "selected[]").click()
+        wd.find_element(By.NAME, "delete").click()
+        self.app.open_home_page()
