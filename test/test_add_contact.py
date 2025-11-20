@@ -4,7 +4,7 @@ from model.Contact import Contact
 
 def test_add_contact(app):
     app.session.login(username="admin", password="secret")
-    app.contact.create_new_contact(Contact(
+    app.contact.create_contact(Contact(
         firstname="Anton",
         middlename="Velikoborets",
         lastname="Anton",
@@ -27,7 +27,7 @@ def test_add_contact(app):
         aday="22",
         amonth="December",
         ayear="2002"
-    ))
+    ), new_contact=True)
     app.session.logout()
 
 
