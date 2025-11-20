@@ -1,7 +1,6 @@
 from model.Contact import Contact
 
 def test_edit_first_contact(app):
-    app.session.login(username="admin", password="secret")
     app.contact.clear_contact()
     app.contact.create_contact(Contact(
         firstname="Den",
@@ -27,4 +26,3 @@ def test_edit_first_contact(app):
         amonth="December",
         ayear="2022"
     ), new_contact=False)
-    app.session.logout()
