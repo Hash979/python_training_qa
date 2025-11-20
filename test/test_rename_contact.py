@@ -1,11 +1,12 @@
 from model.Contact import Contact
 
 def test_edit_first_contact(app):
-    app.contact.clear_contact()
-    app.contact.create_contact(Contact(
-        firstname="Den",
-        middlename="Brig",
-        lastname="Hellen",
+    if app.contact.count() == 0:
+        app.contact.create_contact(Contact(firstname="test"))
+    app.contact.edit_first_contact(Contact(
+        firstname="Don",
+        middlename="don",
+        lastname="don",
         nickname="ssd",
         photo_path=u"C:\\test.png",
         company="dd",
@@ -25,4 +26,11 @@ def test_edit_first_contact(app):
         aday="21",
         amonth="December",
         ayear="2022"
-    ), new_contact=False)
+    ))
+
+def test_edit_firstname_contact(app):
+    if app.contact.count() == 0:
+        app.contact.create_contact(Contact(firstname="test"))
+    app.contact.edit_first_contact(Contact(
+        firstname="Grib"
+    ))

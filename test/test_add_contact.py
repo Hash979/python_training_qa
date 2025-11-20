@@ -26,6 +26,6 @@ def test_add_contact(app):
         aday="22",
         amonth="December",
         ayear="2002"
-    ), new_contact=True)
+    ))
 
 
