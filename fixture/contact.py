@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
-
+from model.Contact import Contact
+from sys import maxsize
 class ContactHelper:
 
     def __init__(self, app):
@@ -24,7 +25,7 @@ class ContactHelper:
 
     def edit_first_contact(self, contact):
         wd = self.app.wd
-        self.app.open_home_page()
+        self.app.open_home_page
         wd.find_element(By.CSS_SELECTOR, 'img[alt="Edit"]').click()
         self.fill_contact_form(contact)
         wd.find_element(By.NAME, "update").click()
@@ -32,7 +33,7 @@ class ContactHelper:
 
     def delete_first_contact(self):
         wd = self.app.wd
-        self.app.open_home_page()
+        self.app.open_home_page
         self.select_first_contact()
         wd.find_element(By.NAME, "delete").click()
         self.app.open_home_page()
@@ -83,3 +84,15 @@ class ContactHelper:
         wd = self.app.wd
         self.app.open_home_page
         return len (wd.find_elements(By.NAME, "selected[]"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        self.app.open_home_page
+        contacts = []
+        for element in wd.find_elements(By.CSS_SELECTOR, "tr[name='entry']"):
+            tds = element.find_elements(By.TAG_NAME, "td")
+            lastname = tds[1].text
+            firstname = tds[2].text
+            id = element.find_element(By.NAME, "selected[]").get_attribute("value")
+            contacts.append(Contact(firstname=firstname, lastname=lastname, id=id))
+        return contacts
