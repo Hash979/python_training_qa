@@ -12,6 +12,10 @@ class ContactHelper:
         if not wd.current_url.startswith("http://localhost/addressbook/edit.php?id="):
             wd.find_element(By.LINK_TEXT, "add new").click()
 
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements(By.NAME, "selected[]")[index].click()
+
     def select_first_contact(self):
         wd = self.app.wd
         wd.find_element(By.NAME, "selected[]").click()
@@ -24,22 +28,28 @@ class ContactHelper:
         self.app.open_home_page()
         self.contact_cache = None
 
-    def edit_first_contact(self, contact):
+    def edit_contact_by_index(self, index, contact):
         wd = self.app.wd
         self.app.open_home_page
-        wd.find_element(By.CSS_SELECTOR, 'img[alt="Edit"]').click()
+        wd.find_elements(By.CSS_SELECTOR, 'img[alt="Edit"]')[index].click()
         self.fill_contact_form(contact)
         wd.find_element(By.NAME, "update").click()
         self.app.open_home_page()
         self.contact_cache = None
 
-    def delete_first_contact(self):
+    def edit_first_contact(self, contact):
+        self.edit_contact_by_index(index, contact)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.app.open_home_page
-        self.select_first_contact()
+        self.select_contact_by_index(index)
         wd.find_element(By.NAME, "delete").click()
         self.app.open_home_page()
         self.contact_cache = None
+
+    def delete_first_contact(self):
+        self.delete_contact_by_index(0)
 
     def fill_contact_form(self, contact):
         wd = self.app.wd
