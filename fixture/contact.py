@@ -30,12 +30,17 @@ class ContactHelper:
 
     def edit_contact_by_index(self, index, contact):
         wd = self.app.wd
-        self.app.open_home_page
-        wd.find_elements(By.CSS_SELECTOR, 'img[alt="Edit"]')[index].click()
+        self.open_contact_to_edit_by_index(index)
         self.fill_contact_form(contact)
         wd.find_element(By.NAME, "update").click()
         self.app.open_home_page()
         self.contact_cache = None
+
+    def open_contact_to_edit_by_index(self, index):
+        wd = self.app.wd
+        self.app.open_home_page
+        wd.find_elements(By.CSS_SELECTOR, 'img[alt="Edit"]')[index].click()
+        return wd
 
     def edit_first_contact(self, contact):
         self.edit_contact_by_index(index, contact)
@@ -110,5 +115,18 @@ class ContactHelper:
                 lastname = tds[1].text
                 firstname = tds[2].text
                 id = element.find_element(By.NAME, "selected[]").get_attribute("value")
-                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id))
+                all_phones = tds[5].splitlines()
+                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id, home=all_phones[0], mobile=all_phones[1], work=all_phones[2], fax=all_phones[3]))
         return self.contact_cache
+
+    def get_contact_info_from_home_page(self, index):
+        wd = self.app.wd
+        self.open_contact_to_edit_by_index(index)
+        firstname = wd.find_element(By.NAME, "firstname").get_attribute("value")
+        lastname = wd.find_element(By.NAME, "lastname").get_attribute("value")
+        id = wd.find_element(By.NAME, "id").get_attribute("value")
+        homephone = wd.find_element(By.NAME, "home").get_attribute("value")
+        workphone = wd.find_element(By.NAME, "work").get_attribute("value")
+        mobilephone = wd.find_element(By.NAME, "mobile").get_attribute("value")
+        secondaryphone = wd.find_element(By.NAME, "phone2").get_attribute("value")
+        return  Contact(firstname=firstname, lastname=lastname, id=id, home=homephone, work=workphone, mobile=mobilephone, fax=secondaryphone)
