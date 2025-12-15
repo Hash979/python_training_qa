@@ -116,8 +116,10 @@ class ContactHelper:
                 lastname = tds[1].text
                 firstname = tds[2].text
                 id = element.find_element(By.NAME, "selected[]").get_attribute("value")
+                address = tds[3].text
+                all_emails = tds[4].text
                 all_phones = tds[5].text
-                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id, all_phones=all_phones))
+                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id, all_phones=all_phones, all_emails=all_emails, address=address))
         return self.contact_cache
 
     def get_contact_info_from_edit_page(self, index):
@@ -125,12 +127,16 @@ class ContactHelper:
         self.open_contact_to_edit_by_index(index)
         firstname = wd.find_element(By.NAME, "firstname").get_attribute("value")
         lastname = wd.find_element(By.NAME, "lastname").get_attribute("value")
+        address = wd.find_element(By.NAME, "address").get_attribute("value")
         id = wd.find_element(By.NAME, "id").get_attribute("value")
+        E_mail = wd.find_element(By.NAME, "email").get_attribute("value")
+        E_mail2 = wd.find_element(By.NAME, "email2").get_attribute("value")
+        E_mail3 = wd.find_element(By.NAME, "email3").get_attribute("value")
         homephone = wd.find_element(By.NAME, "home").get_attribute("value")
         workphone = wd.find_element(By.NAME, "work").get_attribute("value")
         mobilephone = wd.find_element(By.NAME, "mobile").get_attribute("value")
         fax = wd.find_element(By.NAME, "fax").get_attribute("value")
-        return  Contact(firstname=firstname, lastname=lastname, id=id, home=homephone, work=workphone, mobile=mobilephone, fax=fax)
+        return  Contact(firstname=firstname, lastname=lastname, id=id, address=address, home=homephone, work=workphone, mobile=mobilephone, fax=fax, email=E_mail, email2=E_mail2, email3=E_mail3)
 
     def get_contact_from_view_page(self, index):
         wd = self.app.wd
