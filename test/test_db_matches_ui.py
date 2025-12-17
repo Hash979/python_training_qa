@@ -29,5 +29,5 @@ def test_contact_list(app, orm):
             all_phones=merge_phones(contact),
             all_emails=merge_emails(contact)
         )
-    orm_list = map(clean, orm.get_contact_list())
+    orm_list = map(clean, orm.get_contact_list_full())
     assert sorted(ui_list, key=Contact.id_or_max) == sorted(orm_list, key=Contact.id_or_max)

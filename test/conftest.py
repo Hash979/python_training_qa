@@ -5,6 +5,7 @@ import importlib
 import jsonpickle
 from fixture.db import DbFixture
 from fixture.application import Application
+from fixture.orm import ORMFixture
 
 fixture = None
 target = None
@@ -37,11 +38,19 @@ def db(request):
     request.addfinalizer(fin)
     return dbfixture
 
-@pytest.fixture(scope="session",autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def orm(request):
     db_config = load_config(request.config.getoption("--target"))['db']
-    dbfixture = DbFixture(host=db_config['host'], name=db_config['name'], user=db_config['user'], password=db_config['password'])
-    return dbfixture #orm вроде сам закрывает все сессии
+    orm_fixture = ORMFixture(
+        host=db_config['host'],
+        name=db_config['name'],
+        user=db_config['user'],
+        password=db_config['password']
+    )
+    def fin():
+        orm_fixture.destroy()
+    request.addfinalizer(fin)
+    return orm_fixture
 
 @pytest.fixture(scope="session",autouse=True)
 def stop(request):

@@ -20,7 +20,14 @@ class ORMFixture:
         id = PrimaryKey(int, column='id')
         firstname = Optional(str, column='firstname')
         lastname = Optional(str, column='lastname')
-        
+        address = Optional(str, column='address')
+        home = Optional(str, column='home')
+        mobile = Optional(str, column='mobile')
+        work = Optional(str, column='work')
+        fax = Optional(str, column='fax')
+        email = Optional(str, column='email')
+        email2 = Optional(str, column='email2')
+        email3 = Optional(str, column='email3')
         deprecated = Optional(datetime, column='deprecated')
         groups = Set(lambda: ORMFixture.ORMGroup, table='address_in_groups', column="group_id", reverse="contacts")
 
@@ -39,7 +46,7 @@ class ORMFixture:
 
     def convert_contacts_to_model(self, contacts):
         def convert(contact):
-            return Contact(id=str(id), firstname=contact.firstname, lastname=contact.lastname)
+            return Contact(id=str(contact.id), firstname=contact.firstname, lastname=contact.lastname)
         return list(map(convert, contacts))
 
     @db_session
@@ -56,6 +63,32 @@ class ORMFixture:
         orm_group = list(select(g for g in ORMFixture.ORMGroup if g.id == group.id))[0]
         return self.convert_contacts_to_model(
             select(c for c in ORMFixture.ORMContact if c.deprecated is None and orm_group not in c.groups))
+
+    def convert_contacts_to_model_full(self, contacts):
+        def convert(contact):
+            return Contact(
+                id=str(contact.id),
+                firstname=contact.firstname or "",
+                lastname=contact.lastname or "",
+                address=contact.address or "",
+                home=contact.home or "",
+                mobile=contact.mobile or "",
+                work=contact.work or "",
+                fax=contact.fax or "",
+                email=contact.email or "",
+                email2=contact.email2 or "",
+                email3=contact.email3 or ""
+            )
+        return list(map(convert, contacts))
+
+    @db_session
+    def get_contact_list_full(self):
+        return self.convert_contacts_to_model_full(
+            select(c for c in ORMFixture.ORMContact if c.deprecated is None)
+        )
+
+    def destroy(self):
+        self.db.disconnect()
 
 
 
