@@ -1,41 +1,21 @@
 from model.Contact import Contact
-from random import  randrange
+import random
 
-def test_edit_first_contact(app):
-    if app.contact.count() == 0:
+def test_edit_contact(app, orm, json_contacts, check_ui):
+    if len(orm.get_contact_list()) == 0:
         app.contact.create_contact(Contact(firstname="test"))
-    old_contacts = app.contact.get_contact_list()
-    contacts = Contact(
-        firstname="firstname",
-        middlename="don",
-        lastname="lastname",
-        nickname="ssd",
-        photo_path=u"C:\\test.png",
-        company="dd",
-        title="dd",
-        address="dd",
-        home="dd",
-        mobile="+11112",
-        work="dd",
-        fax="dd",
-        email="dd@gmail.com",
-        email2="dd@gmail.com",
-        email3="dd@gmail.com",
-        homepage="dd@gmail.com",
-        bday="12",
-        bmonth="November",
-        byear="2020",
-        aday="21",
-        amonth="December",
-        ayear="2022"
-    )
-    index = randrange(len(old_contacts))
-    contacts.id = old_contacts[index].id
-    app.contact.edit_contact_by_index(index, contacts)
-    new_contacts = app.contact.get_contact_list()
-    assert len(old_contacts)  == len(new_contacts)
-    old_contacts[index] = contacts
+    old_contacts = orm.get_contact_list()
+    contact_to_edit = random.choice(old_contacts)
+    new_contact_data = json_contacts
+    new_contact_data.id = contact_to_edit.id
+    app.contact.edit_contact_by_id(contact_to_edit.id, new_contact_data)
+    new_contacts = orm.get_contact_list()
+    assert len(old_contacts) == len(new_contacts)
+    old_contacts = [new_contact_data if c.id == contact_to_edit.id else c for c in old_contacts]
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+    if check_ui:
+        assert sorted(app.contact.get_contact_list(), key=Contact.id_or_max) == sorted(new_contacts,
+                                                                                       key=Contact.id_or_max)
 
 #def test_edit_firstname_contact(app):
 #    if app.contact.count() == 0:
