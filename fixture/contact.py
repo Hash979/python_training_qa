@@ -10,13 +10,12 @@ class ContactHelper:
 
     def open_add_new_contact_page(self):
         wd = self.app.wd
-        if not wd.current_url.startswith("http://localhost/addressbook/edit.php?id="):
+        if not wd.current_url.startswith(edit_prefix = self.app.base_url + "edit.php?id="):
             wd.find_element(By.LINK_TEXT, "add new").click()
 
     def select_contact_by_index(self, index):
         wd = self.app.wd
         wd.find_elements(By.NAME, "selected[]")[index].click()
-
     def select_contact_by_id(self, id):
         wd = self.app.wd
         wd.find_element(By.CSS_SELECTOR, "input[value='%s']" % id).click()
