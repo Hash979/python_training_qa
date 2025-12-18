@@ -27,8 +27,7 @@ def clean_contact(contact):
         lastname=contact.lastname.strip() if contact.lastname else "",
         address=contact.address.strip() if contact.address else "",
         all_phones=merge_phones(contact),
-        all_emails=merge_emails(contact)
-    )
+        all_emails=merge_emails(contact))
 
 
 def test_add_contact(app, orm):
