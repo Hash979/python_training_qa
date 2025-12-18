@@ -50,8 +50,6 @@ class GroupHelper:
         self.return_to_groups_page()
         self.group_cache = None
 
-    def edit_group(self, text):
-        self.edit_group_by_index(index, text)
 
     def fill_group_form(self, group):
         wd = self.app.wd
@@ -106,3 +104,4 @@ class GroupHelper:
         wd.find_element(By.NAME, "delete").click()
         self.return_to_groups_page()
         self.group_cache = None
+

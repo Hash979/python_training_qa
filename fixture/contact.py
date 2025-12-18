@@ -56,7 +56,7 @@ class ContactHelper:
         edit_link.click()
         return wd
 
-    def open_contact_to_edit_by_index(self, id):
+    def open_contact_to_edit_by_index(self, index):
         wd = self.app.wd
         self.app.open_home_page
         wd.find_elements(By.CSS_SELECTOR, 'img[alt="Edit"]')[index].click()
@@ -181,4 +181,21 @@ class ContactHelper:
         self.app.open_home_page
         wd.find_elements(By.CSS_SELECTOR, 'img[alt="Details"]')[index].click()
         return wd
+
+    def add_contact_into_group(self, id, group_id):
+        wd = self.app.wd
+        self.app.open_home_page
+        self.select_contact_by_id(id)
+        wd.find_element(By.CSS_SELECTOR, "select[name='to_group'] option[value='%s']" % group_id).click()
+        wd.find_element(By.NAME, "add").click()
+        self.app.open_home_page()
+
+    def remove_contact_from_group(self, id, id_group):
+        wd = self.app.wd
+        self.app.open_home_page
+        wd.get("http://localhost/addressbook/?group=%s" % id_group)
+        self.delete_contact_by_id(id)
+
+
+
 

@@ -55,8 +55,9 @@ class ORMFixture:
 
     @db_session
     def get_contacts_in_group(self, group):
-        orm_group = list(select(g for g in ORMFixture.ORMGroup if g.id == group.id))[0]
-        return self.convert_contacts_to_model(orm_group.contacts)
+        return self.convert_contacts_to_model(
+            select(c for c in ORMFixture.ORMContact if c.deprecated is None and group.id in c.groups.id)
+        )
 
     @db_session
     def get_contacts_not_in_group(self, group):
@@ -90,5 +91,16 @@ class ORMFixture:
     def destroy(self):
         self.db.disconnect()
 
+
+    @db_session
+    def get_contact_by_id(self, contact_id):
+        contact = select(c for c in ORMFixture.ORMContact if c.id == contact_id and c.deprecated is None).first()
+        if contact:
+            return Contact(
+                id=str(contact.id),
+                firstname=contact.firstname or "",
+                lastname=contact.lastname or "",
+            )
+        return None
 
 
