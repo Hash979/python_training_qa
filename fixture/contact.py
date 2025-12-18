@@ -192,7 +192,7 @@ class ContactHelper:
     def remove_contact_from_group(self, id, id_group):
         wd = self.app.wd
         self.app.open_home_page
-        wd.get("http://localhost/addressbook/?group=%s" % id_group)
+        wd.get(self.app.base_url + "?group=%s" % id_group)
         self.delete_contact_by_id(id)
 
 
