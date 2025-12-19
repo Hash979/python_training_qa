@@ -15,7 +15,7 @@ def test_delete_some_contact(app, orm):
     app.contact.remove_contact_from_group(contact.id, group.id)
     assert all(c.id != contact.id for c in orm.get_contacts_in_group(group))
 
-def test_add_contact(app, rom):
+def test_add_contact(app, orm):
     if len(orm.get_contact_list()) == 0:
         app.contact.create_contact(Contact(firstname="test"))
     if len(orm.get_group_list()) == 0:
