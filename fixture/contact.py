@@ -50,14 +50,14 @@ class ContactHelper:
 
     def open_contact_to_edit_by_id(self, contact_id):
         wd = self.app.wd
-        self.app.open_home_page
+        self.app.open_home_page()
         edit_link = wd.find_element(By.CSS_SELECTOR, f'a[href="edit.php?id={contact_id}"]')
         edit_link.click()
         return wd
 
     def open_contact_to_edit_by_index(self, index):
         wd = self.app.wd
-        self.app.open_home_page
+        self.app.open_home_page()
         wd.find_elements(By.CSS_SELECTOR, 'img[alt="Edit"]')[index].click()
         return wd
 
@@ -66,7 +66,7 @@ class ContactHelper:
 
     def delete_contact_by_index(self, index):
         wd = self.app.wd
-        self.app.open_home_page
+        self.app.open_home_page()
         self.select_contact_by_index(index)
         wd.find_element(By.NAME, "delete").click()
         self.app.open_home_page()
@@ -74,7 +74,7 @@ class ContactHelper:
 
     def delete_contact_by_id(self, id):
         wd = self.app.wd
-        self.app.open_home_page
+        self.app.open_home_page()
         self.select_contact_by_id(id)
         wd.find_element(By.NAME, "delete").click()
         self.app.open_home_page()
@@ -127,7 +127,7 @@ class ContactHelper:
 
     def count(self):
         wd = self.app.wd
-        self.app.open_home_page
+        self.app.open_home_page()
         return len (wd.find_elements(By.NAME, "selected[]"))
 
     contact_cache = None
@@ -135,7 +135,7 @@ class ContactHelper:
     def get_contact_list(self):
         if self.contact_cache is None:
             wd = self.app.wd
-            self.app.open_home_page
+            self.app.open_home_page()
             self.contact_cache = []
             for element in wd.find_elements(By.CSS_SELECTOR, "tr[name='entry']"):
                 tds = element.find_elements(By.TAG_NAME, "td")
@@ -177,13 +177,13 @@ class ContactHelper:
 
     def open_contact_view_by_index(self, index):
         wd = self.app.wd
-        self.app.open_home_page
+        self.app.open_home_page()
         wd.find_elements(By.CSS_SELECTOR, 'img[alt="Details"]')[index].click()
         return wd
 
     def add_contact_into_group(self, id, group_id):
         wd = self.app.wd
-        self.app.open_home_page
+        self.app.open_home_page()
         self.select_contact_by_id(id)
         wd.find_element(By.CSS_SELECTOR, "select[name='to_group'] option[value='%s']" % group_id).click()
         wd.find_element(By.NAME, "add").click()
@@ -191,7 +191,7 @@ class ContactHelper:
 
     def remove_contact_from_group(self, id, id_group):
         wd = self.app.wd
-        self.app.open_home_page
+        self.app.open_home_page()
         wd.get(self.app.base_url + "?group=%s" % id_group)
         self.delete_contact_by_id(id)
 
